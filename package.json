@@ -1,0 +1,14 @@
+{
+  "name": "my-first-devops-website",
+  "version": "1.0.0",
+  "description": "A basic website using Node.js and Express",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

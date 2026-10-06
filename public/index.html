@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple and clean Node.js Express website for DevOps learning.">
+  <title>My First DevOps Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <div class="status-pill" id="status-indicator">
+        <span class="status-dot"></span>
+        <span id="status-text">Connecting...</span>
+      </div>
+      <h1 id="main-title">My First DevOps Website</h1>
+      <p class="subtitle" id="main-description">
+        A lightweight Node.js and Express web application built to practice containerization, CI/CD pipelines, and cloud deployments.
+      </p>
+    </header>
+
+    <section class="card" id="info-card">
+      <h2 class="card-title">System Information</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">App version</span>
+          <span class="info-value" id="app-version">Loading...</span>
+        </div>
+        <div class="info-divider"></div>
+        <div class="info-item">
+          <span class="info-label">Server hostname</span>
+          <span class="info-value monospace" id="server-hostname">Loading...</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Endpoints: <a href="/health" target="_blank">/health</a> &bull; <a href="/api/info" target="_blank">/api/info</a></p>
+    </footer>
+  </main>
+
+  <script>
+    async function loadInfo() {
+      const versionEl = document.getElementById('app-version');
+      const hostnameEl = document.getElementById('server-hostname');
+      const statusText = document.getElementById('status-text');
+      const statusPill = document.getElementById('status-indicator');
+
+      try {
+        const response = await fetch('/api/info');
+        if (!response.ok) {
+          throw new Error('Failed to fetch info');
+        }
+        const data = await response.json();
+        versionEl.textContent = data.version || 'Unknown';
+        hostnameEl.textContent = data.hostname || 'Unknown';
+        statusText.textContent = 'Operational';
+        statusPill.classList.add('online');
+      } catch (err) {
+        versionEl.textContent = 'Error';
+        hostnameEl.textContent = 'Unavailable';
+        statusText.textContent = 'Offline';
+        statusPill.classList.add('offline');
+      }
+    }
+
+    loadInfo();
+  </script>
+</body>
+</html>
